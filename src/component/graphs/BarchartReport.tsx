@@ -28,7 +28,7 @@ export const BarchartReport = () => {
         <Typography variant='h6' sx={{ marginBottom: 2 }}>
                     Top 10 Selling Products
         </Typography>
-    <ResponsiveContainer width="100%" aspect={3}>
+    <ResponsiveContainer width={600} height={400}>
         <BarChart
           width={500}
           height={300}

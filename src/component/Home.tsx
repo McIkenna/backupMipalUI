@@ -19,8 +19,6 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { SalesRecords } from './SalesRecords';
-import { salesRecordApi } from '../service/salesRecordApi';
 import { UseSalesRecordStore } from '../service/UseSalesRecordStore';
 import { useTopSellProdStore } from '../service/useTopSellProdStore';
 import { useBuyerTrendStore } from '../service/useBuyerTrendStore';

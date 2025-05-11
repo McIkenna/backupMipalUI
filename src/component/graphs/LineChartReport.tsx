@@ -56,14 +56,18 @@ export const LineChartReport = () => {
 
     const groupedData = salesRecord.data.reduce((acc: any, item: any) => {
       if (!acc[item.product_name]) {
-        acc[item.product_name] = [];
+      acc[item.product_name] = [];
       }
       acc[item.product_name].push({
-        date: item.sale_date,
-        quantity: item.quantity_sold,
+      date: item.sale_date,
+      quantity: item.quantity_sold,
       });
       return acc;
     }, {});
+
+    Object.keys(groupedData).forEach((productName) => {
+      groupedData[productName].sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    });
 
     return groupedData;
   }, [salesRecord]);
@@ -99,10 +103,13 @@ export const LineChartReport = () => {
         
       </Box>
         <Box>
-          <Typography variant='h6' sx={{ marginBottom: 2 }}>
+        <Typography variant='h6' sx={{ marginBottom: 2 }}>
+           Sales Analytics Dashboard
+          </Typography>
+          <Typography variant='subtitle1' sx={{ marginBottom: 2 }}>
             {selectedProduct} Sales Report
           </Typography>
-        <ResponsiveContainer width="100%" aspect={3}>
+        <ResponsiveContainer width={600} height={400}>
           <LineChart
             width={500}
             height={300}

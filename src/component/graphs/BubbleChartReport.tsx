@@ -1,20 +1,11 @@
 import React, { useMemo } from 'react'
 import { useBuyerTrendStore } from '../../service/useBuyerTrendStore'
 import { ScatterChart, Scatter, XAxis, YAxis, ZAxis, Tooltip, LabelList, Cell, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
+import {Typography} from '@mui/material';
 export const BubbleChartReport = () => {
     const { buyerTrend } = useBuyerTrendStore(state => state)
     // console.log('buyerTrend from BubbleChartReport -->', buyerTrend)
 
-
-
-    const data = [
-        { x: 100, y: 200, z: 300 },
-        { x: 120, y: 100, z: 860 },
-        { x: 170, y: 300, z: 400 },
-        { x: 140, y: 250, z: 280 },
-        { x: 150, y: 400, z: 800 },
-        { x: 110, y: 280, z: 280 },
-    ];
 
     const data1 = useMemo(() => {
         if (!buyerTrend || !buyerTrend.data) {
@@ -44,7 +35,7 @@ export const BubbleChartReport = () => {
     
 }, [buyerTrend])
 
-console.log('data1 from BubbleChartReport -->', data1)
+// console.log('data1 from BubbleChartReport -->', data1)
 
 
 const parseDomain = () => [
@@ -89,8 +80,11 @@ const range = [100, 5000];
 
 return (
     <div style={{ width: '100%' }}>
+        <Typography variant='h6' sx={{ marginBottom: 2 }}>
+                   Sales Analytics Dashboard
+                  </Typography>
 
-        <ResponsiveContainer width="100%" height={800}>
+        <ResponsiveContainer width={1200} height={800}>
             <ScatterChart
                 margin={{
                     top: 20,
