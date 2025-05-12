@@ -2,59 +2,19 @@ import React, { useMemo, useState } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { UseSalesRecordStore } from '../../service/UseSalesRecordStore';
 import { Select, Box, InputLabel, MenuItem, FormControl, Typography } from '@mui/material';
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 export const LineChartReport = () => {
-  const { salesRecord } = UseSalesRecordStore(state => state)
-
-
-  
-  // const rowData = useMemo(() =>{
-  //         if (!salesRecord || !salesRecord.data) {
-  //             return []
-  //         }
-  //         const columns = salesRecord?.data?.map((item: any) => {
-  //             return {
-  //                 date: item.sale_date,
-  //                 // total: item.total,
-  //                 quantity: item.quantity_sold,
-  //                 name: item.product_name,
-  //             }
-  //         })
-  //         return columns
-
-  //     }, [salesRecord])
-  //   const rowData = useMemo(() => {
-  //     if (!salesRecord || !salesRecord.data) {
-  //         return [];
-  //     }
-
-  //     const groupedData = salesRecord.data.reduce((acc: any, item: any) => {
-  //         const existingProduct = acc.find((entry: any) => entry.name === item.product_name);
-  //         if (existingProduct) {
-  //             existingProduct.quantity += item.quantity_sold;
-  //         } else {
-  //             acc.push({
-  //                 date: item.sale_date, // You can adjust this if grouping by date is needed
-  //                 quantity: item.quantity_sold,
-  //                 name: item.product_name,
-  //             });
-  //         }
-  //         return acc;
-  //     }, []);
-
-  //     return groupedData;
-  // }, [salesRecord]);
+  const { salesRecord, loading } = UseSalesRecordStore(state => state)
  
   const handleChange = (event: any) => {
     setSelectedProduct(event.target.value);
   };
   const rowData = useMemo(() => {
-    if (!salesRecord || !salesRecord.data) {
+    if (!salesRecord || !salesRecord?.data) {
       return [];
     }
-
-    const groupedData = salesRecord.data.reduce((acc: any, item: any) => {
+    const groupedData = salesRecord?.data?.reduce((acc: any, item: any) => {
       if (!acc[item.product_name]) {
       acc[item.product_name] = [];
       }
@@ -109,16 +69,21 @@ export const LineChartReport = () => {
           <Typography variant='subtitle1' sx={{ marginBottom: 2 }}>
             {selectedProduct} Sales Report
           </Typography>
+          {loading || rowData?.length === 0 ?<Box>
+                      <CircularProgress size="3rem"/>
+                  </Box>
+                  :
+                  <Box>
         <ResponsiveContainer width={600} height={400}>
           <LineChart
             width={500}
             height={300}
             data={rowData[selectedProduct]}
             margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
+              top: 0,
+              right: 0,
+              left: 0,
+              bottom: 0,
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
@@ -130,6 +95,8 @@ export const LineChartReport = () => {
             {/* <Line type="monotone" dataKey="name" stroke="#82ca9d" /> */}
           </LineChart>
         </ResponsiveContainer>
+        </Box>
+        }
       </Box>
     </Box>
   );

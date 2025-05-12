@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react'
 import { useBuyerTrendStore } from '../../service/useBuyerTrendStore'
 import { ScatterChart, Scatter, XAxis, YAxis, ZAxis, Tooltip, LabelList, Cell, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
-import {Typography} from '@mui/material';
+import {Typography, Box} from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 export const BubbleChartReport = () => {
-    const { buyerTrend } = useBuyerTrendStore(state => state)
+    const { buyerTrend, loading} = useBuyerTrendStore(state => state)
     // console.log('buyerTrend from BubbleChartReport -->', buyerTrend)
 
 
@@ -22,8 +23,8 @@ export const BubbleChartReport = () => {
                     result.push({
                         term_desc: descs[i],
                         term_weight: weights[i],
-                        scaled_weight_x: 0.001 * Math.random(),
-                        scaled_weight_y: 0.001 * Math.random(),
+                        scaled_weight_x: 0.002 * Math.random(),
+                        scaled_weight_y: 0.002 * Math.random(),
                         scaled_weight_z: weights[i],
 
                     });
@@ -48,32 +49,6 @@ const parseDomain = () => [
     ),
 ];
 
-// const renderTooltip = (props: any) => {
-//     const { active, payload } = props;
-
-//     if (active && payload && payload.length) {
-//       const data = payload[0] && payload[0].payload;
-
-//       return (
-//         <div
-//           style={{
-//             backgroundColor: "#fff",
-//             border: "1px solid #999",
-//             margin: 0,
-//             padding: 10,
-//           }}
-//         >
-//           <p>{data.hour}</p>
-//           <p>
-//             <span>value: </span>
-//             {data.z}
-//           </p>
-//         </div>
-//       );
-//     }
-
-//     return null;
-//   };
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', 'red', 'pink'];
 const domain = parseDomain();
 const range = [100, 5000];
@@ -84,18 +59,23 @@ return (
                    Sales Analytics Dashboard
                   </Typography>
 
-        <ResponsiveContainer width={1200} height={800}>
+{loading || data1?.length === 0 ?<Box>
+                      <CircularProgress size="3rem"/>
+                  </Box>
+                    :
+                    <Box>
+        <ResponsiveContainer width={650} height={800}>
             <ScatterChart
                 margin={{
-                    top: 20,
-                    right: 20,
-                    bottom: 20,
-                    left: 20,
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
                 }}
             >
                 <CartesianGrid />
-                <XAxis type="number" dataKey="scaled_weight_x" name="stature"/>
-                <YAxis type="number" dataKey="scaled_weight_y" name="weight" />
+                <XAxis type="number" dataKey="scaled_weight_x" name="scaled_weight_x" />
+                <YAxis type="number" dataKey="scaled_weight_y" name="scaled_weight_y" />
                 {/* <Tooltip cursor={{ strokeDasharray: '3 3' }} /> */}
                 {/* <Tooltip cursor={{ strokeDasharray: '3 3' }} wrapperStyle={{ zIndex: 100 }} content={renderTooltip} /> */}
                 <ZAxis type="number" dataKey="scaled_weight_z" domain={domain}  range={range}/>
@@ -108,6 +88,8 @@ return (
                 </Scatter>
             </ScatterChart>
         </ResponsiveContainer>
+        </Box>
+        }
     </div>
 );
     

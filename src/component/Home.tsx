@@ -22,6 +22,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { UseSalesRecordStore } from '../service/UseSalesRecordStore';
 import { useTopSellProdStore } from '../service/useTopSellProdStore';
 import { useBuyerTrendStore } from '../service/useBuyerTrendStore';
+import { usePredictSaleStore } from '../service/usePredictSaleStore';
 import { useNavigate } from 'react-router-dom';
 const drawerWidth = 240;
 
@@ -99,12 +100,14 @@ export const Home =({children}: any)=> {
    const { salesRecord, fetchSalesRecord} = UseSalesRecordStore();
    const { topSellProd, fetchTopSellProd } = useTopSellProdStore();
     const { buyerTrend, fetchBuyerTrend } = useBuyerTrendStore();
+    const { predictSale, fetchPredictSale } = usePredictSaleStore();
     const navigate = useNavigate();
    useEffect(() => {
     fetchSalesRecord();
     fetchTopSellProd();
     fetchBuyerTrend();
-  }, [fetchSalesRecord, fetchTopSellProd, fetchBuyerTrend]);
+    fetchPredictSale();
+  }, [fetchSalesRecord, fetchTopSellProd, fetchBuyerTrend, fetchPredictSale]);
 
   const handleDrawerOpen = () => {
     setOpen(true);

@@ -2,11 +2,9 @@ import React, {useMemo} from 'react'
 import { useTopSellProdStore } from '../../service/useTopSellProdStore'
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Box, Typography } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 export const BarchartReport = () => {
-    const {topSellProd} = useTopSellProdStore(state => state)
-
-    console.log('topSellProd from BarchartReport -->', topSellProd)
-
+    const {topSellProd, loading} = useTopSellProdStore(state => state)
       const rowData = useMemo(() =>{
           if (!topSellProd || !topSellProd.data) {
               return []
@@ -28,16 +26,21 @@ export const BarchartReport = () => {
         <Typography variant='h6' sx={{ marginBottom: 2 }}>
                     Top 10 Selling Products
         </Typography>
+        {loading || rowData?.length === 0 ?<Box>
+                              <CircularProgress size="3rem"/>
+                          </Box>
+                            :
+                            <Box>
     <ResponsiveContainer width={600} height={400}>
         <BarChart
           width={500}
           height={300}
           data={rowData}
           margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
+            top: 0,
+            right: 0,
+            left: 0,
+            bottom: 0,
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
@@ -49,6 +52,8 @@ export const BarchartReport = () => {
           {/* <Bar dataKey="uv" fill="#82ca9d" activeBar={<Rectangle fill="gold" stroke="purple" />} /> */}
         </BarChart>
       </ResponsiveContainer>
+      </Box>
+        }
       </Box>
   )
 }
